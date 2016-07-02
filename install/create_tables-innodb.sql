@@ -38,8 +38,8 @@ CREATE TABLE `tblAttributeDefinitions` (
   `multiple` tinyint(4) NOT NULL default '0',
   `minvalues` int(11) NOT NULL default '0',
   `maxvalues` int(11) NOT NULL default '0',
-  `valueset` text default NULL,
-  `regex` text default NULL,
+  `valueset` text,
+  `regex` text,
   UNIQUE(`name`),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -61,7 +61,7 @@ CREATE TABLE `tblUsers` (
   `comment` text NOT NULL,
   `role` smallint(1) NOT NULL default '0',
   `hidden` smallint(1) NOT NULL default '0',
-  `pwdExpiration` datetime NOT NULL default '0000-00-00 00:00:00',
+  `pwdExpiration` datetime NOT NULL default '1000-01-01 00:00:00',
   `loginfailures` tinyint(4) NOT NULL default '0',
   `disabled` smallint(1) NOT NULL default '0',
   `quota` bigint,
@@ -80,7 +80,7 @@ CREATE TABLE `tblUserPasswordRequest` (
   `id` int(11) NOT NULL auto_increment,
   `userID` int(11) NOT NULL default '0',
   `hash` varchar(50) default NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   PRIMARY KEY  (`id`),
   CONSTRAINT `tblUserPasswordRequest_user` FOREIGN KEY (`userID`) REFERENCES `tblUsers` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -95,7 +95,7 @@ CREATE TABLE `tblUserPasswordHistory` (
   `id` int(11) NOT NULL auto_increment,
   `userID` int(11) NOT NULL default '0',
   `pwd` varchar(50) default NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   PRIMARY KEY  (`id`),
   CONSTRAINT `tblUserPasswordHistory_user` FOREIGN KEY (`userID`) REFERENCES `tblUsers` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -149,7 +149,7 @@ CREATE TABLE `tblFolderAttributes` (
   `id` int(11) NOT NULL auto_increment,
   `folder` int(11) default NULL,
   `attrdef` int(11) default NULL,
-  `value` text default NULL,
+  `value` text,
   PRIMARY KEY  (`id`),
   UNIQUE (folder, attrdef),
   CONSTRAINT `tblFolderAttributes_folder` FOREIGN KEY (`folder`) REFERENCES `tblFolders` (`id`) ON DELETE CASCADE,
@@ -191,7 +191,7 @@ CREATE TABLE `tblDocumentAttributes` (
   `id` int(11) NOT NULL auto_increment,
   `document` int(11) default NULL,
   `attrdef` int(11) default NULL,
-  `value` text default NULL,
+  `value` text,
   PRIMARY KEY  (`id`),
   UNIQUE (document, attrdef),
   CONSTRAINT `tblDocumentAttributes_document` FOREIGN KEY (`document`) REFERENCES `tblDocuments` (`id`) ON DELETE CASCADE,
@@ -226,7 +226,7 @@ CREATE TABLE `tblDocumentApproveLog` (
   `approveID` int(11) NOT NULL default '0',
   `status` tinyint(4) NOT NULL default '0',
   `comment` text NOT NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   `userID` int(11) NOT NULL default '0',
   PRIMARY KEY  (`approveLogID`),
   CONSTRAINT `tblDocumentApproveLog_approve` FOREIGN KEY (`approveID`) REFERENCES `tblDocumentApprovers` (`approveID`) ON DELETE CASCADE,
@@ -267,7 +267,7 @@ CREATE TABLE `tblDocumentContentAttributes` (
   `id` int(11) NOT NULL auto_increment,
   `content` int(11) default NULL,
   `attrdef` int(11) default NULL,
-  `value` text default NULL,
+  `value` text,
   PRIMARY KEY  (`id`),
   UNIQUE (content, attrdef),
   CONSTRAINT `tblDocumentContentAttributes_document` FOREIGN KEY (`content`) REFERENCES `tblDocumentContent` (`id`) ON DELETE CASCADE,
@@ -358,7 +358,7 @@ CREATE TABLE `tblDocumentReviewLog` (
   `reviewID` int(11) NOT NULL default '0',
   `status` tinyint(4) NOT NULL default '0',
   `comment` text NOT NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   `userID` int(11) NOT NULL default '0',
   PRIMARY KEY  (`reviewLogID`),
   CONSTRAINT `tblDocumentReviewLog_review` FOREIGN KEY (`reviewID`) REFERENCES `tblDocumentReviewers` (`reviewID`) ON DELETE CASCADE,
@@ -391,7 +391,7 @@ CREATE TABLE `tblDocumentStatusLog` (
   `statusID` int(11) NOT NULL default '0',
   `status` tinyint(4) NOT NULL default '0',
   `comment` text NOT NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   `userID` int(11) NOT NULL default '0',
   PRIMARY KEY  (`statusLogID`),
   KEY `statusID` (`statusID`),
@@ -493,9 +493,9 @@ CREATE TABLE `tblSessions` (
   `lastAccess` int(11) NOT NULL default '0',
   `theme` varchar(30) NOT NULL default '',
   `language` varchar(30) NOT NULL default '',
-  `clipboard` text default '',
+  `clipboard` text,
 	`su` INTEGER DEFAULT NULL,
-  `splashmsg` text default '',
+  `splashmsg` text,
   PRIMARY KEY  (`id`),
   CONSTRAINT `tblSessions_user` FOREIGN KEY (`userID`) REFERENCES `tblUsers` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -556,7 +556,7 @@ CREATE TABLE tblWorkflowStates (
   `name` text NOT NULL,
   `visibility` smallint(5) DEFAULT 0,
   `maxtime` int(11) DEFAULT 0,
-  `precondfunc` text DEFAULT NULL,
+  `precondfunc` text,
   `documentstatus` smallint(5) DEFAULT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -651,7 +651,7 @@ CREATE TABLE tblWorkflowLog (
   `workflow` int(11) default NULL,
   `userid` int(11) default NULL,
   `transition` int(11) default NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   `comment` text,
   PRIMARY KEY  (`id`),
   CONSTRAINT `tblWorkflowLog_document` FOREIGN KEY (`document`) REFERENCES `tblDocuments` (`id`) ON DELETE CASCADE,
@@ -672,7 +672,7 @@ CREATE TABLE tblWorkflowDocumentContent (
   `document` int(11) DEFAULT NULL,
   `version` smallint(5) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
-  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `date` datetime NOT NULL default '1000-01-01 00:00:00',
   CONSTRAINT `tblWorkflowDocument_document` FOREIGN KEY (`document`) REFERENCES `tblDocuments` (`id`) ON DELETE CASCADE,
   CONSTRAINT `tblWorkflowDocument_workflow` FOREIGN KEY (`workflow`) REFERENCES `tblWorkflows` (`id`) ON DELETE CASCADE,
   CONSTRAINT `tblWorkflowDocument_state` FOREIGN KEY (`state`) REFERENCES `tblWorkflowStates` (`id`) ON DELETE CASCADE
@@ -711,8 +711,8 @@ CREATE TABLE `tblVersion` (
 -- Initial content for database
 --
 
-INSERT INTO tblUsers VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', 'address@server.com', '', '', '', 1, 0, '0000-00-00 00:00:00', 0, 0, 0, NULL);
-INSERT INTO tblUsers VALUES (2, 'guest', NULL, 'Guest User', NULL, '', '', '', 2, 0, '0000-00-00 00:00:00', 0, 0, 0, NULL);
+INSERT INTO tblUsers VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', 'address@server.com', '', '', '', 1, 0, '1000-01-01 00:00:00', 0, 0, 0, NULL);
+INSERT INTO tblUsers VALUES (2, 'guest', NULL, 'Guest User', NULL, '', '', '', 2, 0, '1000-01-01 00:00:00', 0, 0, 0, NULL);
 INSERT INTO tblFolders VALUES (1, 'DMS', 0, '', 'DMS root', UNIX_TIMESTAMP(), 1, 0, 2, 0);
 INSERT INTO tblVersion VALUES (NOW(), 5, 0, 0);
 INSERT INTO tblCategory VALUES (0, '');
