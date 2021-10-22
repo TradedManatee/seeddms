@@ -76,6 +76,7 @@ if(isset($settings->_extraPath))
 if(isset($settings->_maxExecutionTime))
 	ini_set('max_execution_time', $settings->_maxExecutionTime);
 
+/* removed from PHP 8.0, no longer required from PHP5.4 as slashes no longer added
 if (get_magic_quotes_gpc()) {
 	$process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
 	while (list($key, $val) = each($process)) {
@@ -91,6 +92,7 @@ if (get_magic_quotes_gpc()) {
 	}
 	unset($process);
 }
+*/
 
 if($settings->_enableFullSearch) {
 	if($settings->_fullSearchEngine == 'sqlitefts') {
