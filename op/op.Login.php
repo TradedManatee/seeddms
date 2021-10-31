@@ -57,9 +57,9 @@ if (!isset($login) || strlen($login)==0) {
 $pwd = '';
 if(isset($_POST['pwd'])) {
 	$pwd = (string) $_POST["pwd"];
-	if (get_magic_quotes_gpc()) {
+/*	if (get_magic_quotes_gpc()) {
 		$pwd = stripslashes($pwd);
-	}
+	} */
 }
 
 if($settings->_enableGuestLogin && (int) $settings->_guestID) {
